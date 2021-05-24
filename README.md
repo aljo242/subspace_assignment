@@ -1,5 +1,13 @@
 # Alex Johnson Subspace Coding Assignment
 
+## Prerequisites
+
+Rust and Cargo
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+
 ## Installation
 
 Clone the repository and build (debug).
