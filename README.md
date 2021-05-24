@@ -1,12 +1,41 @@
 # Alex Johnson Subspace Coding Assignment
 
+## Installation
+
+Clone the repository and build (debug).
+
+```bash
+git clone https://github.com/aljo242/subspace_assignment.git
+cd subspace_assignment
+cargo build
+```
+## Release Build
+
+```bash
+cargo build --release
+```
+
+## Testing
+
+```bash
+cargo test
+```
+
+## Benchmarking
+
+```bash
+cargo bench
+```
+
+## Description
+
 In Subspace, we adapt the underlying modular square root permutation to create a
 block cipher. This ensures farmers expend some minimum wall-clock time T (and
 proportional computation) while encoding each piece, while verifiers only have to
 expend time T/C to decode each piece, where C is a constant speed-up proportional
 to the size of the Prime used.
 
-Assignment:
+## Assignment:
 
 Port the underlying square root permutation to Rust using the C implementation as
 a guide. Please note that you are not being asked to port Sloth or create a block
@@ -27,3 +56,6 @@ Create benchmarks using criterion for and determine the constant verification sp
 * Set up project skeleton with criterion benchmarking and unit testing
 * Learn how to use the rug crate to create 256 bit blocks
 * Translate the equivalent functions from the pysloth C [implementation](https://github.com/randomchain/pysloth/blob/master/sloth.c).
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
