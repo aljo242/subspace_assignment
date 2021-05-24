@@ -15,6 +15,11 @@ cargo build
 cargo build --release
 ```
 
+## Run 
+```bash
+cargo run
+```
+
 ## Testing
 
 ```bash
