@@ -1,5 +1,13 @@
 # Alex Johnson Subspace Coding Assignment
 
+## Prerequisites
+
+Rust and Cargo
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+
 ## Installation
 
 Clone the repository and build (debug).
@@ -16,11 +24,17 @@ cargo build --release
 ```
 
 ## Run 
+
+This performs a basic run through: Block -> *encoding* -> cipher text -> *decoding* -> Block.
+Results are printed to the command line.
+
 ```bash
 cargo run
 ```
 
 ## Testing
+
+Tests can be found in ./src/lib.rs.
 
 ```bash
 cargo test
