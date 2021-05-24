@@ -36,26 +36,26 @@ pub fn to_block(int: Integer) -> Block {
 /// find next lowset prime above a given value
 pub fn next_prime(p: &mut Integer) {
     if p.is_even() {
-        *p += Integer::from(1);
+        *p += 1;
     } else {
-        *p += Integer::from(2);
+        *p += 2;
     }
 
     while p.is_probably_prime(PRIME_CHECK_ITERS) == IsPrime::No {
-        *p += Integer::from(2);
+        *p += 2;
     }
 }
 
 /// find next highest prime below a given value
 pub fn prev_prime(p: &mut Integer) {
     if p.is_even() {
-        *p -= Integer::from(1);
+        *p -= 1;
     } else {
-        *p -= Integer::from(2);
+        *p -= 2;
     }
 
     while p.is_probably_prime(PRIME_CHECK_ITERS) == IsPrime::No {
-        *p -= Integer::from(2);
+        *p -= 2;
     }
 }
 
@@ -120,12 +120,14 @@ pub fn inverse_sqrt(input: &Integer, prime: &Integer) -> Integer {
     let square = tmp.square();
 
     if input.is_even() {
+        // tmp = square % prime
         let tmp = match square.pow_mod(&Integer::from(1), prime) {
             Ok(tmp) => tmp,
             Err(_) => unreachable!(),
         };
         result.assign(tmp);
     } else {
+        // tmp = square % prime
         let mut tmp = match square.pow_mod(&Integer::from(1), prime) {
             Ok(tmp) => tmp,
             Err(_) => unreachable!(),
@@ -153,7 +155,7 @@ pub fn run() {
     let prime = gen_largest_prime(PRIME_BYTE_SIZE);
 
     // e = (p + 1) / 4
-    let mut exponent = prime.clone() + Integer::from(1);
+    let mut exponent: Integer = prime.clone() + 1;
     exponent.div_exact_u_mut(4);
 
     // generate random number as input
