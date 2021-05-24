@@ -59,7 +59,7 @@ pub fn prev_prime(p: &mut Integer) {
     }
 }
 
-/// generates largest prime number fitting into max_size_bytes that is congruent to 4 mod 3
+/// generates largest prime number fitting into max_size_bytes that is congruent to 3 mod 4
 pub fn gen_largest_prime(max_size_bytes: usize) -> Integer {
     let mut prime = Integer::from(Integer::u_pow_u(2, (max_size_bytes * 8) as u32)) - 1;
     prev_prime(&mut prime);
@@ -76,6 +76,9 @@ pub fn gen_largest_prime(max_size_bytes: usize) -> Integer {
 pub fn sqrt_permutation(input: &Integer, exp: &Integer, prime: &Integer) -> Integer {
     let mut result = Integer::from(0);
 
+    // compute (a|b) legendre symbol 
+    // if 1, is a quadratic residue
+    // if -1 is a quadratic non-residue
     if input.legendre(prime) == 1 {
         let mut tmp = input.clone();
         tmp = match tmp.pow_mod(exp, prime) {
@@ -85,6 +88,7 @@ pub fn sqrt_permutation(input: &Integer, exp: &Integer, prime: &Integer) -> Inte
         if tmp.is_even() {
             result.assign(tmp);
         } else {
+            // result = prime - tmp
             tmp.neg_assign();
             tmp.add_assign(prime);
             result.assign(tmp);
@@ -98,6 +102,7 @@ pub fn sqrt_permutation(input: &Integer, exp: &Integer, prime: &Integer) -> Inte
         if tmp.is_odd() {
             result.assign(tmp);
         } else {
+            // result = prime - tmp
             tmp.neg_assign();
             tmp.add_assign(prime);
             result.assign(tmp);
@@ -135,7 +140,7 @@ pub fn inverse_sqrt(input: &Integer, prime: &Integer) -> Integer {
 
 
 /// perform a basic run through of the block encoding pipeline
-/// 1. create the largest prime that is congruent to 4 mod 3
+/// 1. create the largest prime that is congruent to 3 mod 4
 /// 2. derive exponent from prime using e = (prime + 1) / 4
 /// 3. create a random block of data to be "encoded"
 /// 4. find the square root permutation ("encode" to cipher text)
@@ -187,7 +192,7 @@ mod test {
             let mut prime = gen_largest_prime(size);
             assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
-            // ensure the next prime is larger than 2^256 - 1 OR is not congruent to 4 mod 3
+            // ensure the next prime is larger than 2^256 - 1 OR is not congruent to 3 mod 4
             next_prime(&mut prime);
             let largest_value = Integer::from(Integer::u_pow_u(2, (size * 8) as u32)) - 1;
             assert!(prime > largest_value || prime.mod_u(4) != 3);
