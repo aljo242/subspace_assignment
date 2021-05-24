@@ -23,7 +23,7 @@ _Bonus_
 
 Create benchmarks using criterion for and determine the constant verification speedup for a 256 bit prime.
 
-Plan:
+## Plan:
 * Set up project skeleton with criterion benchmarking and unit testing
 * Learn how to use the rug crate to create 256 bit blocks
 * Translate the equivalent functions from the pysloth C [implementation](https://github.com/randomchain/pysloth/blob/master/sloth.c).
