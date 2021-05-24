@@ -31,6 +31,20 @@ fn to_block(int: Integer) -> Block {
     block
 }
 
+// find next lowset prime above a given value
+fn next_prime(p: &mut Integer) {
+    if p.is_even() {
+        *p += Integer::from(1);
+    } else {
+        *p += Integer::from(2);
+    }
+
+    while p.is_probably_prime(PRIME_CHECK_ITERS) == IsPrime::No {
+        *p += Integer::from(2);
+    }
+}
+
+// find next highest prime below a given value
 fn prev_prime(p: &mut Integer) {
     if p.is_even() {
         *p -= Integer::from(1);
@@ -175,14 +189,22 @@ mod test {
 
     #[test]
     fn test_prime_generation() {
-        let mut prime = Integer::from(Integer::u_pow_u(2, (PRIME_BYTE_SIZE * 8) as u32)) - 1;
-        prev_prime(&mut prime);
-        // ensure prime is congruent to 3 mod 4
-        // as specified in paper
-        while prime.mod_u(4) != 3 {
-            prev_prime(&mut prime);
-        }
+        // test for many byte size configs
+        for size in 1..64 {
+            let mut prime = gen_largest_prime(size);
+            assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
+            // ensure the next prime is larger than 2^256 - 1 OR is not congruent to 4 mod 3
+            next_prime(&mut prime);
+            let largest_value = Integer::from(Integer::u_pow_u(2, (size * 8) as u32)) - 1;
+            assert!(prime > largest_value || prime.mod_u(4) != 3);
+        }
+    }
+
+    #[test]
+    fn test_largest_prime_256_bits() {
+        // test for many byte size configs
+        let prime = gen_largest_prime(PRIME_BYTE_SIZE);
         assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
         // 2^256 - 189 | largest prime that fits into 256 bits
