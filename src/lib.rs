@@ -1,7 +1,6 @@
 // rug is the Rust equivalent of GMP (GNU Multi Precision Arithmetic Library)
 // so this is the equiv of "#include <gmp.h>" in the pysloth implementation
 // we use this since Rust does not support 256bit integers
-use rand;
 use rug::ops::NegAssign;
 use rug::{integer::IsPrime, integer::Order, Assign, Integer};
 use std::ops::AddAssign;
@@ -22,8 +21,7 @@ pub type Block = [u8; BLOCK_BYTE_SIZE];
 
 /// convert Block -> rug::Integer
 pub fn from_block(block: Block) -> Integer {
-    let from = Integer::from_digits(&block, ORDER);
-    from
+    Integer::from_digits(&block, ORDER)
 }
 
 /// convert rug::Integer -> Block
