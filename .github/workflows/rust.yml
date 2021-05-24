@@ -20,3 +20,36 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
+      
+  # ...
+  cross-test:
+    name: Test on ${{ matrix.target }} (using cross)
+    runs-on: ubuntu-latest
+    env:
+      # Optional: see note below
+      RUSTFLAGS: '--cfg using_cross'
+      RUSTDOCFLAGS: '--cfg using_cross'
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          # 32-bit x86
+          - i686-unknown-linux-gnu
+          # 32-bit ARM (on Android)
+          - armv7-linux-androideabi
+          # 64-bit ARM (on Android)
+          - aarch64-linux-android
+          # 32-bit MIPS(-BE) (that is: big endian)
+          - mips-unknown-linux-gnu
+          # 64-bit MIPS(-BE) (that is: big endian)
+          - mips64-unknown-linux-gnuabi64
+          # Tons of others...
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hecrj/setup-rust-action@v1
+      - run: cargo install cross
+      # Note: just use `cross` as you would `cargo`, but always
+      # pass the `--target=${{ matrix.target }}` arg. (Yes, really).
+      - run: cross test --verbose --target=${{ matrix.target }} --no-default-features
+      - run: cross test --verbose --target=${{ matrix.target }} --all-features
+      # ...
