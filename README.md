@@ -16,11 +16,17 @@ cargo build --release
 ```
 
 ## Run 
+
+This performs a basic run through: Block -> *encoding* -> cipher text -> *decoding* -> Block.
+Results are printed to the command line.
+
 ```bash
 cargo run
 ```
 
 ## Testing
+
+Tests can be found in ./src/lib.rs.
 
 ```bash
 cargo test
