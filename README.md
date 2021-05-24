@@ -27,6 +27,12 @@ cargo test
 cargo bench
 ```
 
+## Links
+
+* [SLOTH](https://eprint.iacr.org/2015/366)
+* [Modular Square Roots](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.374&rep=rep1&type=pdf)
+* [pysloth repo](https://github.com/randomchain/pysloth/blob/master/sloth.c)
+
 ## Description
 
 In Subspace, we adapt the underlying modular square root permutation to create a
