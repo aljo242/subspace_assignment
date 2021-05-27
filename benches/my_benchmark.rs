@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion, black_box};
 use subspace_assignment::{inverse_sqrt, sqrt_permutation, run, from_block, gen_largest_prime, PRIME_BYTE_SIZE, Block};
 use rug::{Integer};
 
@@ -13,19 +13,21 @@ fn encode_decode(c: &mut Criterion) {
     let int = from_block(block_in);
 
     c.bench_function("encode", |b| b.iter(|| 
-        sqrt_permutation(&int, &exponent, &prime)    
+        black_box(sqrt_permutation(&int, &exponent, &prime))
     ));
 
     let perm = sqrt_permutation(&int, &exponent, &prime); 
 
     c.bench_function("decode", |b| b.iter(|| 
-        inverse_sqrt(&perm, &prime)
+        black_box(inverse_sqrt(&perm, &prime))
     ));
 
 }
 
 fn end_to_end(c: &mut Criterion) {
-    c.bench_function("end_to_end", |b| b.iter(|| run()));
+    c.bench_function("end_to_end", |b| b.iter(|| 
+        black_box(run())
+    ));
 }
 
 
