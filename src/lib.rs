@@ -163,7 +163,7 @@ pub fn run() {
     let inv = inverse_sqrt(&perm, &prime);
     let block_out = to_block(inv);
     assert_eq!(block_in, block_out);
-}
+} 
 
 // creating this submodule means we won't compile testing code
 // when we compile "production-ready" binaries
@@ -192,7 +192,7 @@ mod test {
             let mut prime = gen_largest_prime(size);
             assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
-            // ensure the next prime is larger than 2^256 - 1 OR is not congruent to 3 mod 4
+            // ensure the next prime is larger than 2^(size * 8) - 1 OR is not congruent to 3 mod 4
             next_prime(&mut prime);
             let largest_value = Integer::from(Integer::u_pow_u(2, (size * 8) as u32)) - 1;
             assert!(prime > largest_value || prime.mod_u(4) != 3);
@@ -202,8 +202,7 @@ mod test {
     #[test]
     /// verify that the prime generated for 256 bits is 115792089237316195423570985008687907853269984665640564039457584007913129639747 as expected
     fn test_largest_prime_256_bits() {
-        // test for many byte size configs
-        let prime = gen_largest_prime(32);
+        let prime = gen_largest_prime(BLOCK_BYTE_SIZE);
         assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
         // 2^256 - 189 | largest prime that fits into 256 bits

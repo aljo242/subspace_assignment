@@ -3,7 +3,7 @@ use subspace_assignment::run;
 
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("256 bit", |b| b.iter(|| run()));
+    c.bench_function("256_bit", |b| b.iter(|| run()));
 }
 
 
