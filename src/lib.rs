@@ -79,6 +79,7 @@ pub fn sqrt_permutation(input: &Integer, exp: &Integer, prime: &Integer) -> Inte
     // if -1 is a quadratic non-residue
     if input.legendre(prime) == 1 {
         let mut tmp = input.clone();
+        // input ^ exp %  prime
         tmp = match tmp.pow_mod(exp, prime) {
             Ok(tmp) => tmp,
             Err(_) => unreachable!(),
@@ -119,6 +120,7 @@ pub fn inverse_sqrt(input: &Integer, prime: &Integer) -> Integer {
 
     if input.is_even() {
         // tmp = square % prime
+        // tmp = square^1 % prime = square % prime
         let tmp = match square.pow_mod(&Integer::from(1), prime) {
             Ok(tmp) => tmp,
             Err(_) => unreachable!(),
@@ -130,6 +132,7 @@ pub fn inverse_sqrt(input: &Integer, prime: &Integer) -> Integer {
             Ok(tmp) => tmp,
             Err(_) => unreachable!(),
         };
+        // result = prime - tmp
         tmp.neg_assign();
         tmp.add_assign(prime);
         result.assign(tmp);
@@ -205,7 +208,7 @@ mod test {
         let prime = gen_largest_prime(BLOCK_BYTE_SIZE);
         assert_ne!(prime.is_probably_prime(PRIME_CHECK_ITERS), IsPrime::No);
 
-        // 2^256 - 189 | largest prime that fits into 256 bits
+        // 2^256 - 189 | largest prime that fits into 256 bits congruent to 3 mod 4
         let largest_prime_str =
             "115792089237316195423570985008687907853269984665640564039457584007913129639747";
         assert_eq!(prime, largest_prime_str.parse::<Integer>().unwrap());
@@ -216,22 +219,7 @@ mod test {
     /// using 256 bit block size as specified
     fn test_end_to_end() {
         for _n in 0..1000 {
-            // generate largest prime
-            // create largest number possible for PRIME_BYTE_SIZE and then reduce
-            // until it is largest viable PRIME
-            let prime = gen_largest_prime(PRIME_BYTE_SIZE);
-            // e = (p + 1) / 4
-            let mut exponent = prime.clone() + Integer::from(1);
-            exponent.div_exact_u_mut(4);
-
-            // generate random number as input
-            let block_in: Block = rand::random();
-            let int = from_block(block_in);
-            let perm = sqrt_permutation(&int, &exponent, &prime);
-            let inv = inverse_sqrt(&perm, &prime);
-            let block_out = to_block(inv);
-
-            assert_eq!(block_in, block_out);
+            run();
         }
     }
 }

@@ -29,8 +29,11 @@ fn end_to_end(c: &mut Criterion) {
         black_box(run())
     ));
 }
-
-
+  
 
 criterion_group!(benches, end_to_end, encode_decode);
 criterion_main!(benches);
+
+// paper: C = 77.922
+// mine: C = 22.963 us / 319.4 ns = 71.7
+

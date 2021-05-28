@@ -32,4 +32,4 @@ fn main() {
     let block_out = to_block(inv);
     println!("output block: {:?}", block_out);
     assert_eq!(block_in, block_out);
-}
+} 
